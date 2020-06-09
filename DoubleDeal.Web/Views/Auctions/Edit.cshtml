@@ -1,0 +1,34 @@
+﻿@model DealDouble.Entities.Auction
+
+<h2>Edit</h2>
+
+<form id="editform" method="post">
+    <input type="hidden" value="@Model.ID" />
+    <label>Enter the Title</label>
+    <input name="Title" value="@Model.Title" />
+    <br />
+    <label>Enter the Description</label>
+    <input name="Description" value="@Model.Description" />
+    <br />
+    <label>Enter the ActualAmount</label>
+    <input name="ActualAmount" value="@Model.ActualAmount" />
+    <br />
+    <label>Enter the StartingTime</label>
+    <input name="StaringTime" value="@Model.StaringTime" />
+    <br />
+    <label>Enter the EndingTime</label>
+    <input name="EndTime" value="@Model.EndTime" />
+    <br />
+    <button>Save</button>
+</form>
+@*<script>
+    $("#newSaveButton").click(function () {
+        $.ajax({
+            url: "Auctions/Edit/",
+            method: "post",
+            data: $("#editform").serialize()
+        }).done(function (response) {
+            $("#listingArea").html(response);
+        });
+    });
+</script>*@

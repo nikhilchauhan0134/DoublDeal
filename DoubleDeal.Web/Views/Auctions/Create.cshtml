@@ -1,0 +1,71 @@
+﻿
+
+
+<div class="modal-header">
+    <h5 class="modal-title">Create Auction</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form id="createForm" method="post" action="/Auctions/Create">
+   
+
+    
+
+    <div class="modal-body">
+        
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Enter the Title <span class="text-danger">*</span></label>
+                    <input class="form-control" name="Title" />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input class="form-control" name="Description" />
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="hidden" id="ImageURL" name="ImageURL" />
+                    <input class="form-control" id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                </div>
+                <div class="form-group">
+                    <label>Enter the ActualAmount</label>
+                    <input class="form-control" name="ActualAmount" />
+                </div>
+                <div class="form-group">
+                    <label>Enter the StartingTime</label>
+                    <input class="form-control" name="StaringTime" />
+                </div>
+                <div class="form-group">
+                    <label>Enter the EndingTime</label>
+                    <input class="form-control" name="EndTime" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb">
+                    <img class="img-thumbnail img-fluid" id="categoryImage" />
+                </div>
+            </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button id="saveSubmit" type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</form>
+
+<script>
+    $("#saveSubmit").click(function () {
+        $.ajax({
+            url: '@Url.Action("Create", "Auctions")',
+            method: "post",
+            data: $("#createForm").serialize()
+        }).done(function (response) {
+            
+            $("#listingArea").html(response);
+            $("#formModal").modal('toggle');
+            
+        });
+    });
+</script>
+

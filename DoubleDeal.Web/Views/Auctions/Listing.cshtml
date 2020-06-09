@@ -1,0 +1,70 @@
+﻿@model DoubleDeal.Web.ViewModels.AuctionsListingViewModel
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actual Amount</th>
+            <th>Starting Time</th>
+            <th>Ending Time</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var auction in Model.Auctions)
+        {
+            <tr>
+
+                <td>
+                    <input type="hidden" value="@auction.ID" />
+                    @auction.Title
+                </td>
+                <td>@auction.Description</td>
+                <td>@auction.ActualAmount</td>
+                <td>@auction.StaringTime</td>
+                <td>@auction.EndTime</td>
+                <td>
+                    <button class="editbutton btn btn-primary" data-id="@auction.ID">Edit</button>
+                    <button class="deletebutton btn btn-danger" data-id="@auction.ID" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+      $(".editbutton").click(function () {
+                    $.ajax({
+                        url:'@Url.Action("Edit", "Auctions")',
+                        method: "get",
+                        data: {
+                            ID: $(this).attr("data-id")
+                        }
+                    }).done(function (response) {
+                        $("#contextArea").html(response);
+                    });
+                });
+                $(".deletebutton").click(function () {
+                    var result = confirm("Are you want to delete");
+                    if (result == true) {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "Auctions")',
+                            method: "post",
+                            data: {
+                                ID: $(this).attr("data-id")
+                            }
+
+                        }).done(function (response) {
+                            $("#listingArea").html(response);
+                        });
+                    }
+
+                });
+</script>
+
+
+
+
+
