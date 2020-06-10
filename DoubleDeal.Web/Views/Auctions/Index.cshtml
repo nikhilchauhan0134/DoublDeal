@@ -1,14 +1,18 @@
 ﻿
 <div class="row">
-    <div class="col-lg-12">
-        <h2>Auction</h2>
-        <div id="listingArea">
-            @{Html.RenderAction("Listing");}
+    <div class="col-lg-12 m-2">
+        <div class="float-left">
+            <h2>Auction</h2>
         </div>
-       
-        <div>
+        
+         <div class="float-right">
             <button id="CreateNewAuction" class="btn btn-success">Create New Auction</button>
         </div>
+         <div id="listingArea">
+             @{Html.RenderAction("Listing");}
+         </div>
+       
+       
 
 
 

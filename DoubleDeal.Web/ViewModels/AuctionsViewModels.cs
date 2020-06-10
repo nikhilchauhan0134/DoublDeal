@@ -16,5 +16,20 @@ namespace DoubleDeal.Web.ViewModels
         public List<Auction> AllAuctions { get; set; }
         public List<Auction> PromotedAuctions { get; set; }
     }
+    public class AuctionsDetailsViewModel : PageViewModel
+    {
+        public  Auction Auction { get; set; }
+    }
+    public class  CreateAuctionsViewModel : PageViewModel
+    {
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+        public decimal ActualAmount { get; set; }
+        public DateTime StaringTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public string AuctionPictures { get; set; }
+    }
+
 
 }

@@ -39,9 +39,18 @@ namespace DoubleDeal.Web.Controllers
             return PartialView();
         }
         [HttpPost]
-        public ActionResult Create(Auction auction)
+        public ActionResult Create(CreateAuctionsViewModel model)
         {
-            
+            Auction auction = new Auction();
+            auction.Title = model.Title;
+            auction.Description = model.Description;
+            auction.ActualAmount = model.ActualAmount;
+            auction.StaringTime = model.StaringTime;
+            auction.EndTime = model.EndTime;
+            var pictureIDs = model.AuctionPictures.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(ID => int.Parse(ID)).ToList();
+            auction.AuctionPictures = new List<AuctionPicture>();
+            auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
+
             service.SaveAuction(auction);
             return RedirectToAction("Listing");
         }

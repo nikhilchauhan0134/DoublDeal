@@ -14,33 +14,36 @@
 
     <div class="modal-body">
         
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Enter the Title <span class="text-danger">*</span></label>
-                    <input class="form-control" name="Title" />
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <input class="form-control" name="Description" />
-                </div>
-                <div class="form-group">
-                    <label>Image</label>
-                    <input type="hidden" id="ImageURL" name="ImageURL" />
-                    <input class="form-control" id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
-                </div>
-                <div class="form-group">
-                    <label>Enter the ActualAmount</label>
-                    <input class="form-control" name="ActualAmount" />
-                </div>
-                <div class="form-group">
-                    <label>Enter the StartingTime</label>
-                    <input class="form-control" name="StaringTime" />
-                </div>
-                <div class="form-group">
-                    <label>Enter the EndingTime</label>
-                    <input class="form-control" name="EndTime" />
-                </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Enter the Title <span class="text-danger">*</span></label>
+                <input class="form-control" name="Title" />
             </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input class="form-control" name="Description" />
+            </div>
+
+            <div class="form-group">
+                <label>Enter the ActualAmount</label>
+                <input class="form-control" name="ActualAmount" />
+            </div>
+            <div class="form-group">
+                <label>Enter the StartingTime</label>
+                <input class="form-control" name="StaringTime" />
+            </div>
+            <div class="form-group">
+                <label>Enter the EndingTime</label>
+                <input class="form-control" name="EndTime" />
+            </div>
+            <div class="form-group">
+                <label>Select Pictures</label>
+
+                <input class="form-control" id="auctionPicture" name="AuctionPictures" type="file" multipl />
+                <div id="PictureArea"></div>
+                <input type="hidden" id="pictureIds" name="AuctionPictures" />
+            </div>
+        </div>
             <div class="col-md-4">
                 <div class="thumb">
                     <img class="img-thumbnail img-fluid" id="categoryImage" />
@@ -56,7 +59,7 @@
 
 <script>
     $("#saveSubmit").click(function () {
-        $.ajax({
+       $.ajax({
             url: '@Url.Action("Create", "Auctions")',
             method: "post",
             data: $("#createForm").serialize()
@@ -64,6 +67,35 @@
             
             $("#listingArea").html(response);
             $("#formModal").modal('toggle');
+            
+        });
+    });
+    $("#auctionPicture").change(function () {
+        var pictures = this.files;
+        var picsData = new FormData();
+        for (var i = 0; i < pictures.length; i++) {
+            picsData.append("Picture", pictures[i]);
+        }
+        $.ajax({
+            url: '@Url.Action("UploadPictures", "Shared")',
+            type: "post",
+            data: picsData,
+            dataType: 'json',
+			contentType: false,
+			processData: false
+        }).done(function (responses) {
+            
+            var picsIDs = "";
+            for (var i = 0; i < responses.length; i++) {
+                var picResonse = responses[i];
+                var imgHtml = "<img class='img-fluid' src='/content/images/" + picResonse.pictureURL + "'/>";
+                $("#PictureArea").append(imgHtml);
+                picsIDs = picsIDs + "," + picResonse.ID;
+            }
+            $("#pictureIds").val(picsIDs);
+            
+           // $("#listingArea").html(response);
+           // $("#formModal").modal('toggle');
             
         });
     });
