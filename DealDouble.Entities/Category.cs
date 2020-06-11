@@ -10,7 +10,7 @@ namespace DealDouble.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<Auction> Auctions { get; set; }
+        public virtual List<Auction> Auctions { get; set; }
 
     }
 }

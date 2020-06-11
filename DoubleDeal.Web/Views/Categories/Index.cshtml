@@ -1,12 +1,13 @@
 ﻿
+
 <div class="row">
     <div class="col-lg-12 m-2">
         <div class="float-left">
-            <h2>Auction</h2>
+            <h2>Categories</h2>
         </div>
 
         <div class="float-right">
-            <button id="CreateNewAuction" class="btn btn-success">Create New Auction</button>
+            <button id="CreateNewAuction" class="btn btn-success">Create New Categories</button>
         </div>
         <div id="listingArea">
             @{Html.RenderAction("Listing");}
@@ -46,13 +47,11 @@
 
     </div>
 </div>
-<div id="imageTemplate" style="display:none">
-    <img class="image img-thumbnail" src='' style="width:200px; height:200px;" />
-</div>
+
 <script>
                 $("#CreateNewAuction").click(function () {
                     $.ajax({
-                        url: '@Url.Action("Create", "Auctions")',
+                        url: '@Url.Action("Create", "Categories")',
                         type: "get"
                     }).done(function (response) {
                         $("#formModal").modal('toggle');
@@ -60,15 +59,11 @@
 
                     });
                 });
-             function RemoveImageOnClick() {
-                $("#PictureArea .image").click(function () {
-                    $(this).remove();
-                });
-            }
+             
     $("#mDeletebutton").click(function () {
-        
+
                         $.ajax({
-                            url: '@Url.Action("Delete", "Auctions")',
+                            url: '@Url.Action("Delete", "Categories")',
                             method: "post",
                             data: {
                                 ID: $(this).attr("data-recordID")
@@ -84,14 +79,7 @@
 
 
 
-     function AttachNewImage(imageURL, imageID) {
-        var $newingHTML = $("#imageTemplate").clone();
-        $newingHTML.find(".image").attr("src", "/content/images/" + imageURL);
-        $newingHTML.find(".image").attr("data-id", imageID);
-        $("#PictureArea").append($newingHTML.html());
-        RemoveImageOnClick();
-    }
-   
+
 
 </script>
 

@@ -32,6 +32,8 @@ namespace DoubleDeal.Web.ViewModels
         public DateTime EndTime { get; set; }
         public string AuctionPictures { get; set; }
         public List<Category> Categories { get; set; }
+        public int ID { get; set; }
+        public List<AuctionPicture> AuctionPictureList { get; set; }
     }
 
 

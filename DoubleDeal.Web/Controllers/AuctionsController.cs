@@ -52,24 +52,54 @@ namespace DoubleDeal.Web.Controllers
             auction.ActualAmount = model.ActualAmount;
             auction.StaringTime = model.StaringTime;
             auction.EndTime = model.EndTime;
-            var pictureIDs = model.AuctionPictures.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(ID => int.Parse(ID)).ToList();
-            auction.AuctionPictures = new List<AuctionPicture>();
-            auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
+            if (!string.IsNullOrEmpty(model.AuctionPictures))
+            {
+                var pictureIDs = model.AuctionPictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(ID => int.Parse(ID)).ToList();
+                auction.AuctionPictures = new List<AuctionPicture>();
+                auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
 
+            }
             auctionService.SaveAuction(auction);
             return RedirectToAction("Listing");
         }
         [HttpGet]
         public ActionResult Edit(int ID)  
         {
-            
+            CreateAuctionsViewModel model = new CreateAuctionsViewModel();
             var auction = auctionService.GetAuctionByID(ID);
-            return PartialView(auction);
+            model.ID = auction.ID;
+            model.Title = auction.Title;
+            model.CategoryID = auction.CategoryID;
+            model.Description = auction.Description;
+            model.ActualAmount = auction.ActualAmount;
+            model.StaringTime = auction.StaringTime;
+            model.EndTime = auction.EndTime;
+            model.Categories = categoriesService.GetAllCategories();
+            model.AuctionPictureList = auction.AuctionPictures;
+           
+
+            return PartialView(model);
+
         }
         [HttpPost]
-        public ActionResult Edit(Auction auction)
+        public ActionResult Edit(CreateAuctionsViewModel model)
         {
-            
+            Auction auction = new Auction();
+            auction.ID = model.ID;
+            auction.Title = model.Title;
+            auction.CategoryID = model.CategoryID;
+            auction.Description = model.Description;
+            auction.ActualAmount = model.ActualAmount;
+            auction.StaringTime = model.StaringTime;
+            auction.EndTime = model.EndTime;
+            if (!string.IsNullOrEmpty(model.AuctionPictures))
+            {
+                var pictureIDs = model.AuctionPictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(ID => int.Parse(ID)).ToList();
+                auction.AuctionPictures = new List<AuctionPicture>();
+                auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() {AuctionID=auction.ID, PictureID = x }).ToList());
+
+            }
+
             auctionService.updateAuction(auction);
             return RedirectToAction("Listing");
         }

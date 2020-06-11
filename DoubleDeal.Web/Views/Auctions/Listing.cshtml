@@ -27,8 +27,8 @@
             <td>@auction.StaringTime</td>
             <td>@auction.EndTime</td>
             <td>
-                <button class="editbutton btn btn-primary" data-id="@auction.ID">Edit</button>
-                <button class="deletebutton btn btn-danger" data-id="@auction.ID" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+                <button class="editbutton btn btn-primary" data-id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
+                <button class="deletebutton btn btn-danger" data-id="@auction.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
             </td>
 
 
@@ -37,33 +37,26 @@
     </tbody>
 </table>
 <script>
-      $(".editbutton").click(function () {
+    $(".editbutton").click(function () {
+       
                     $.ajax({
-                        url:'@Url.Action("Edit", "Auctions")',
-                        method: "get",
+                        url: '@Url.Action("Edit", "Auctions")',
+                        type: "get",
                         data: {
                             ID: $(this).attr("data-id")
                         }
                     }).done(function (response) {
                         $("#contextArea").html(response);
+                        $("#formModal").modal('toggle');
                     });
-                });
-                $(".deletebutton").click(function () {
-                    var result = confirm("Are you want to delete");
-                    if (result == true) {
-                        $.ajax({
-                            url: '@Url.Action("Delete", "Auctions")',
-                            method: "post",
-                            data: {
-                                ID: $(this).attr("data-id")
-                            }
-
-                        }).done(function (response) {
-                            $("#listingArea").html(response);
-                        });
-                    }
-
-                });
+      });
+    $(".deletebutton").click(function () {
+        
+        $("#deleteModal").modal('toggle');
+        $("#mDeletebutton").attr("data-recordID", $(this).attr("data-id"))         
+      });
+                
+  
 </script>
 
 

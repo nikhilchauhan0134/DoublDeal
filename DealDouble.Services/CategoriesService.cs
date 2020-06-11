@@ -15,6 +15,29 @@ namespace DealDouble.Services
             DealDoubleContext context = new DealDoubleContext();
             return context.Categories.ToList();
         }
-      
+        public Category GetCategoryByID(int ID)
+        {
+            DealDoubleContext context = new DealDoubleContext();
+            return context.Categories.Find(ID);
+        }
+        public void SaveCategory(Category category)
+        {
+            DealDoubleContext context = new DealDoubleContext();
+            context.Categories.Add(category);
+            context.SaveChanges();
+        }
+        public void updateCategory(Category category)
+        {
+            DealDoubleContext context = new DealDoubleContext();
+            context.Entry(category).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
+        }
+        public void DeleteCategory(Category category)
+        {
+            DealDoubleContext context = new DealDoubleContext();
+            context.Entry(category).State = System.Data.Entity.EntityState.Deleted;
+            context.SaveChanges();
+        }
+
     }
 }
