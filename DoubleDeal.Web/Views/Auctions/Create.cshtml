@@ -1,4 +1,4 @@
-﻿
+﻿@model DoubleDeal.Web.ViewModels.CreateAuctionsViewModel
 
 
 <div class="modal-header">
@@ -9,7 +9,6 @@
 </div>
 <form id="createForm" method="post" action="/Auctions/Create">
    
-
     
 
     <div class="modal-body">
@@ -18,6 +17,15 @@
             <div class="form-group">
                 <label>Enter the Title <span class="text-danger">*</span></label>
                 <input class="form-control" name="Title" />
+            </div>
+            <div class="form-group">
+                <label>Category <span class="text-danger">*</span></label>
+                <select class="form-control" name="CategoryID">
+                    @foreach (var category in Model.Categories)
+                    {
+                    <option value="@category.ID">@category.Name</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label>Description</label>
@@ -39,9 +47,9 @@
             <div class="form-group">
                 <label>Select Pictures</label>
 
-                <input class="form-control" id="auctionPicture" name="AuctionPictures" type="file" multipl />
+                <input class="form-control" id="auctionPicture" name="AuctionPictures" type="file" multiple />
                 <div id="PictureArea"></div>
-                <input type="hidden" id="pictureIds" name="AuctionPictures" />
+                <input type="hidden" id="pictureIds" name="AuctionPictures" value="" />
             </div>
         </div>
             <div class="col-md-4">
@@ -59,6 +67,12 @@
 
 <script>
     $("#saveSubmit").click(function () {
+        var imagesIDs = [];
+        $("#PictureArea .image").each(function () {
+            var imageID = $(this).attr("data-id");
+            imagesIDs.push(imageID);
+        });
+        $("#pictureIds").val(imagesIDs.join());
        $.ajax({
             url: '@Url.Action("Create", "Auctions")',
             method: "post",
@@ -85,19 +99,22 @@
 			processData: false
         }).done(function (responses) {
             
-            var picsIDs = "";
+            //var picsIDs = "";
             for (var i = 0; i < responses.length; i++) {
                 var picResonse = responses[i];
-                var imgHtml = "<img class='img-fluid' src='/content/images/" + picResonse.pictureURL + "'/>";
-                $("#PictureArea").append(imgHtml);
-                picsIDs = picsIDs + "," + picResonse.ID;
+                AttachNewImage(picResonse.pictureURL, picResonse.ID);
+               
             }
-            $("#pictureIds").val(picsIDs);
-            
-           // $("#listingArea").html(response);
-           // $("#formModal").modal('toggle');
+         
             
         });
     });
+    function AttachNewImage(imageURL, imageID) {
+        var $newingHTML = $("#imageTemplate").clone();
+        $newingHTML.find(".image").attr("src", "/content/images/" + imageURL);
+        $newingHTML.find(".image").attr("data-id", imageID);
+        $("#PictureArea").append($newingHTML.html());
+        RemoveImageOnClick();
+    }
 </script>
 

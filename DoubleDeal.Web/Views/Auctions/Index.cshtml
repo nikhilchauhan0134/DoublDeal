@@ -27,6 +27,9 @@
 
     </div>
 </div>
+<div id="imageTemplate" style="display:none">
+    <img  class="image img-fluid" src=''/>
+</div>
 <script>
                 $("#CreateNewAuction").click(function () {
                     $.ajax({
@@ -38,6 +41,11 @@
 
                     });
                 });
+    function RemoveImageOnClick() {
+        $("#PictureArea .image").click(function () {
+            $(this).remove();
+        });
+    }
 
 </script>
 

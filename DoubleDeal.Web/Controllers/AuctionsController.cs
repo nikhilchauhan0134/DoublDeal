@@ -11,12 +11,13 @@ namespace DoubleDeal.Web.Controllers
 {
     public class AuctionsController : Controller
     {
-        AuctionService service = new AuctionService();
+        AuctionService auctionService = new AuctionService();
+        CategoriesService categoriesService = new CategoriesService();
         // GET: Auctions
         public ActionResult Index()
         {
             AuctionsListingViewModel model = new AuctionsListingViewModel(); 
-            model.Auctions= service.GetAllAuction();
+            model.Auctions= auctionService.GetAllAuction();
             model.PageTitle = "Autions";
             model.PageDescription ="Auction Listing Page";
             return View(model);
@@ -28,7 +29,7 @@ namespace DoubleDeal.Web.Controllers
         public ActionResult Listing()
         {
             AuctionsListingViewModel model = new AuctionsListingViewModel();
-            model.Auctions = service.GetAllAuction();
+            model.Auctions = auctionService.GetAllAuction();
             return PartialView(model);
 
         }
@@ -36,13 +37,17 @@ namespace DoubleDeal.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            return PartialView();
+            CreateAuctionsViewModel model = new CreateAuctionsViewModel();
+            model.Categories = categoriesService.GetAllCategories();
+
+            return PartialView(model);
         }
         [HttpPost]
         public ActionResult Create(CreateAuctionsViewModel model)
         {
             Auction auction = new Auction();
             auction.Title = model.Title;
+            auction.CategoryID = model.CategoryID;
             auction.Description = model.Description;
             auction.ActualAmount = model.ActualAmount;
             auction.StaringTime = model.StaringTime;
@@ -51,21 +56,21 @@ namespace DoubleDeal.Web.Controllers
             auction.AuctionPictures = new List<AuctionPicture>();
             auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
 
-            service.SaveAuction(auction);
+            auctionService.SaveAuction(auction);
             return RedirectToAction("Listing");
         }
         [HttpGet]
         public ActionResult Edit(int ID)  
         {
             
-            var auction = service.GetAuctionByID(ID);
+            var auction = auctionService.GetAuctionByID(ID);
             return PartialView(auction);
         }
         [HttpPost]
         public ActionResult Edit(Auction auction)
         {
             
-            service.updateAuction(auction);
+            auctionService.updateAuction(auction);
             return RedirectToAction("Listing");
         }
 
@@ -73,21 +78,25 @@ namespace DoubleDeal.Web.Controllers
         public ActionResult Delete(int ID)
         {
             
-            var auction = service.GetAuctionByID(ID);
+            var auction = auctionService.GetAuctionByID(ID);
             return View(auction);
         }
         [HttpPost]
         public ActionResult Delete(Auction auction)
         {
             
-            service.DeleteAuction(auction);
+            auctionService.DeleteAuction(auction);
             return RedirectToAction("Listing");
         }
         [HttpGet]
         public ActionResult Details(int ID)
         {
-            var auction = service.GetAuctionByID(ID);
-            return View(auction);
+            AuctionsDetailsViewModel model = new AuctionsDetailsViewModel();
+            model.Auction = auctionService.GetAuctionByID(ID);
+            model.PageTitle = "Auction Details:" + model.Auction.Title;
+            model.PageDescription = model.Auction.Description.Substring(0, 10);
+
+            return View(model);
 
         }
     }

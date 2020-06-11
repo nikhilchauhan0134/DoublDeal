@@ -3,6 +3,7 @@
     <thead>
         <tr>
             <th>Title</th>
+            <th>Category</th>
             <th>Description</th>
             <th>Actual Amount</th>
             <th>Starting Time</th>
@@ -14,23 +15,24 @@
     <tbody>
         @foreach (var auction in Model.Auctions)
         {
-            <tr>
+        <tr>
 
-                <td>
-                    <input type="hidden" value="@auction.ID" />
-                    @auction.Title
-                </td>
-                <td>@auction.Description</td>
-                <td>@auction.ActualAmount</td>
-                <td>@auction.StaringTime</td>
-                <td>@auction.EndTime</td>
-                <td>
-                    <button class="editbutton btn btn-primary" data-id="@auction.ID">Edit</button>
-                    <button class="deletebutton btn btn-danger" data-id="@auction.ID" data-toggle="modal" data-target="#DeleteModal">Delete</button>
-                </td>
+            <td>
+                <input type="hidden" value="@auction.ID" />
+                @auction.Title
+            </td>
+            <td>@auction.Category.Name</td>
+            <td>@auction.Description</td>
+            <td>@auction.ActualAmount</td>
+            <td>@auction.StaringTime</td>
+            <td>@auction.EndTime</td>
+            <td>
+                <button class="editbutton btn btn-primary" data-id="@auction.ID">Edit</button>
+                <button class="deletebutton btn btn-danger" data-id="@auction.ID" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+            </td>
 
 
-            </tr>
+        </tr>
         }
     </tbody>
 </table>

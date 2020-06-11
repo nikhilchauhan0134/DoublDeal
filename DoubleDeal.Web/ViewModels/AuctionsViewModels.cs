@@ -22,6 +22,8 @@ namespace DoubleDeal.Web.ViewModels
     }
     public class  CreateAuctionsViewModel : PageViewModel
     {
+        
+        public int CategoryID { get; set; }
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -29,6 +31,7 @@ namespace DoubleDeal.Web.ViewModels
         public DateTime StaringTime { get; set; }
         public DateTime EndTime { get; set; }
         public string AuctionPictures { get; set; }
+        public List<Category> Categories { get; set; }
     }
 
 
